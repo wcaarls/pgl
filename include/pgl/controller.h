@@ -24,6 +24,7 @@
 
 namespace pgl {
 
+/// Camera controller which orbits around a center
 class OrbitController : public Controller
 {
   public:

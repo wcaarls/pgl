@@ -38,6 +38,7 @@
 
 namespace pgl {
 
+/// Basic 3D primitive
 class Primitive
 {
   public:
@@ -75,12 +76,38 @@ class Primitive
     }
     
     // Transfers ownership
-    void attach(Primitive *child)
+    Primitive* attach(Primitive *child)
     {
       children.push_back(child);
+      return child;
     }
 
   protected:
+    // Align a centered z-axis aligned primitive
+    // along end-start, starting at start.
+    // Returns length.
+    double align(const Vector3 &start, const Vector3 &end)
+    {
+      Vector3 vec = end-start;
+      double len = vec.norm();
+      vec = vec / len;
+      
+      // Change to Z alignment
+      double angle = acos(vec.z);
+      Vector3 axis{-vec.y, vec.x, 0};
+    
+      transform = Transform(axis, angle, start)*Translation({0, 0, len/2});
+      
+      return len;
+    }
+  
+    void normal(const Vector3 &v)
+    {
+      double norm = v.norm();
+    
+      glNormal3d(v.x/norm, v.y/norm, v.z/norm);
+    }
+    
     void vertex(const Vector3 &v)
     {
       glVertex3d(v.x, v.y, v.z);
@@ -88,23 +115,30 @@ class Primitive
     
     void quad(const Vector3 &v1, const Vector3 &v2, const Vector3 &v3, const Vector3 &v4)
     {
+      triangle(v1, v2, v3);
+      triangle(v3, v4, v1);
+    }
+
+    void triangle(const Vector3 &v1, const Vector3 &v2, const Vector3 &v3)
+    {
       vertex(v1);
       vertex(v2);
       vertex(v3);
-      vertex(v4);
     }
 };
 
+/// Camera looking at a list of primitives
 class Scene
 {
   public:
     Transform transform;
     Vector3 background;
+    double fovy;
   
     std::vector<Primitive*> objects;
     
   public:
-    Scene() : background{0, 0, 0}
+    Scene() : background{0, 0, 0}, fovy(0.92)
     {
     }
   
@@ -124,8 +158,7 @@ class Scene
       glGetIntegerv(GL_VIEWPORT, dims);
       double aspect = dims[2]/(double)dims[3];
       
-      // Angle of view such that at distance x our field is x vertically.
-      double f = 1/tan(0.46);
+      double f = 1/tan(fovy/2);
       double near = 1, far = 100;
       
       // gluPerspective(45/aspect, aspect, near, far)
@@ -145,12 +178,14 @@ class Scene
     }
     
     // Transfers ownership
-    void attach(Primitive *object)
+    Primitive *attach(Primitive *object)
     {
       objects.push_back(object);
+      return object;
     }
 };
 
+/// Camera controller
 class Controller
 {
   public:

@@ -81,21 +81,15 @@ int main(void)
   
   // Initialize our scene
   scene__ = new pgl::Scene();
-  auto floor = new pgl::Box({10, 10, 0.1});
-  box__ = new pgl::Box({2, 1, 1}, {0, 0, 1});
-  auto xaxis = new pgl::Box({0, 0, 0}, {5, 0, 0}, 0.2); xaxis->color = {1, 0, 0};
-  auto yaxis = new pgl::Box({0, 0, 0}, {0, 5, 0}, 0.2); yaxis->color = {0, 1, 0};
-  auto zaxis = new pgl::Box({0, 0, 0}, {0, 0, 5}, 0.2); zaxis->color = {0, 0, 1};
-
-  // TODO: Make easier  
-  scene__->attach(floor);
-  scene__->attach(box__);
-  scene__->attach(xaxis);
-  scene__->attach(yaxis);
-  scene__->attach(zaxis);
+  scene__->attach(new pgl::Box({10, 10, 0.1}));
+  scene__->attach(new pgl::Sphere(1));
+  scene__->attach(box__ = new pgl::Box({2, 1, 1}, {0, 0, 1}));
+  scene__->attach(new pgl::Capsule({0, 0, 0}, {5, 0, 0}, 0.2))->color = {1, 0, 0};
+  scene__->attach(new pgl::Capsule({0, 0, 0}, {0, 5, 0}, 0.2))->color = {0, 1, 0};
+  scene__->attach(new pgl::Capsule({0, 0, 0}, {0, 0, 5}, 0.2))->color = {0, 0, 1};
   
   controller__ = new OrbitController(scene__);
-  controller__->view(0, M_PI/2, 10);
+  controller__->view(1, 0.5, 10);
 
   // Register callbacks  
   glfwSetWindowRefreshCallback(window, refresh);
@@ -110,7 +104,9 @@ int main(void)
   glEnable(GL_LIGHT0);
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_COLOR_MATERIAL);
+  glEnable(GL_CULL_FACE);
   glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+  glCullFace(GL_BACK);
 
   // Main loop  
   stop__ = false;
@@ -124,6 +120,7 @@ int main(void)
   // Clean up
   glfwTerminate();
   
+  delete controller__;
   delete scene__;
 
   return 0;

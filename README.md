@@ -21,6 +21,12 @@ limitations under the License.
 
 "When all you want to do is draw some boxes"
 
+WARNING: Uses legacy OpenGL 2.1 functions. Built for ease of use and glx
+compatibility, not speed.
+
+Header-only library providing quick and easy drawing of 3D primitives
+(box, sphere, cylinder, capsule), a scene graph, and camera controller.
+
 # Installation (Ubuntu 18.04)
 ```
 sudo apt install git cmake g++ libgl-dev
