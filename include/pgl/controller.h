@@ -52,7 +52,7 @@ class OrbitController : public Controller
       apply();
     }
     
-    void click(int button, int action, int mods, double xpos, double ypos)
+    void click(int button, int action, int /*mods*/, double xpos, double ypos)
     {
       if (action == PGL_PRESS)
       {
@@ -71,7 +71,7 @@ class OrbitController : public Controller
         mode_ = modeNone;
     }
     
-    void scroll(double xoffset, double yoffset)
+    void scroll(double /*xoffset*/, double yoffset)
     {
       distance *= pow(sqrt(2), -yoffset);
       apply();

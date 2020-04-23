@@ -43,7 +43,7 @@ void refresh(GLFWwindow* window)
   glfwSwapBuffers(window);
 }
 
-void reshape(GLFWwindow* window, int width, int height)
+void reshape(GLFWwindow* /*window*/, int width, int height)
 {
   glViewport(0, 0, width, height);
 }
@@ -55,17 +55,17 @@ void click(GLFWwindow* window, int button, int action, int mods)
   controller__->click(button, action, mods, xpos, ypos);
 }
 
-void scroll(GLFWwindow* window, double xoffset, double yoffset)
+void scroll(GLFWwindow* /*window*/, double xoffset, double yoffset)
 {
   controller__->scroll(xoffset, yoffset);
 }
 
-void motion(GLFWwindow* window, double xpos, double ypos)
+void motion(GLFWwindow* /*window*/, double xpos, double ypos)
 {
   controller__->motion(xpos, ypos);
 }
 
-void close(GLFWwindow* window)
+void close(GLFWwindow* /*window*/)
 {
   stop__ = true;
 }

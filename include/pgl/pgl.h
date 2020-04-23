@@ -138,9 +138,7 @@ class Scene
     std::vector<Primitive*> objects;
     
   public:
-    Scene() : background{0, 0, 0}, fovy(0.92)
-    {
-    }
+    Scene() : background{0, 0, 0}, fovy(0.92) { }
   
     ~Scene()
     {
@@ -192,9 +190,8 @@ class Controller
     Scene *scene;
     
   public:
-    Controller(Scene *_scene) : scene(_scene)
-    {
-    }
+    Controller(Scene *_scene) : scene(_scene) { }
+    virtual ~Controller() { }
   
     virtual void click(int button, int action, int mods, double xpos, double ypos) = 0;
     virtual void scroll(double xoffset, double yoffset) = 0;

@@ -2,7 +2,7 @@ project(primgl)
 cmake_minimum_required(VERSION 2.8.3)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
-set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} --std=c++11)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=c++11 -Wall -Wextra")
 
 if (NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE RelWithDebInfo)

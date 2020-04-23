@@ -152,7 +152,7 @@ class Transform
     
     void set(const Vector3 &axis, const double &angle, const Vector3 &translation)
     {
-      double s = sin(angle), c = cos(angle), s1 = 1-s, c1 = 1-c;
+      double s = sin(angle), c = cos(angle), c1 = 1-c;
       double x = axis.x, y = axis.y, z = axis.z;
       
       data[0] = c      + x*x*c1; data[4] = x*y*c1 - z*s;    data[ 8] = x*z*c1 + y*s;
