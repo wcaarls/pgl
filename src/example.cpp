@@ -30,15 +30,15 @@
 using namespace pgl;
 
 bool stop__ = false;
-Primitive *box__;
 Scene *scene__;
+Primitive *object__;
 OrbitController *controller__;
 
 void refresh(GLFWwindow* window)
 {
   scene__->draw();
   
-  box__->transform = box__->transform * Rotation({0.01, 0, 0});
+  object__->transform = object__->transform * Rotation({0.01, 0, 0});
   
   glfwSwapBuffers(window);
 }
@@ -81,17 +81,19 @@ int main(void)
   
   // Initialize our scene
   scene__ = new pgl::Scene();
-  scene__->attach(new pgl::Box({10, 10, 0.1}));
-  scene__->attach(new pgl::WireBox({10, 10, 10}));
-  scene__->attach(new pgl::Sphere(1));
-  scene__->attach(box__ = new pgl::Box({2, 1, 1}, {0, 0, 1}));
-  box__->attach(new pgl::Box({1, 0, 0}, {2, 0, 1}, 1));
-  scene__->attach(new pgl::Capsule({0, 0, 0}, {5, 0, 0}, 0.2))->color = {1, 0, 0};
-  scene__->attach(new pgl::Capsule({0, 0, 0}, {0, 5, 0}, 0.2))->color = {0, 1, 0};
-  scene__->attach(new pgl::Capsule({0, 0, 0}, {0, 0, 5}, 0.2))->color = {0, 0, 1};
+  scene__->attach(new pgl::Box({2, 2, 0.05}, {0, 0, -1.025}));
+  scene__->attach(new pgl::WireBox({2, 2, 2}));
+  scene__->attach(new pgl::Sphere(0.05));
+  
+  scene__->attach(object__ = new Capsule({-0.3, 0, 0}, {0.3, 0, 0}, 0.02))->color = {1, 0, 0};
+  object__->attach(new Capsule({0, -0.3, 0}, {0, 0.3, 0}, 0.02))->color = {0, 1, 0};
+  
+  scene__->attach(new pgl::Arrow({-1, -1, -1}, { 0, -1, -1}, 0.02))->color = {1, 0, 0};
+  scene__->attach(new pgl::Arrow({-1, -1, -1}, {-1,  0, -1}, 0.02))->color = {0, 1, 0};
+  scene__->attach(new pgl::Arrow({-1, -1, -1}, {-1, -1, 0}, 0.02))->color = {0, 0, 1};
   
   controller__ = new OrbitController(scene__);
-  controller__->view(1, 0.5, 10);
+  controller__->view(0.5, 0.4, 4);
 
   // Register callbacks  
   glfwSetWindowRefreshCallback(window, refresh);

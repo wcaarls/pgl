@@ -223,7 +223,7 @@ class Cylinder : public Primitive
     void vertex(const Vector3 &v)
     {
       normal({v.x, v.y, 0});
-      vertex(v);
+      Primitive::vertex(v);
     }
 };
 
@@ -233,6 +233,41 @@ class Cone : public Cylinder
   public:
     Cone(double length, double radius) : Cylinder(length, radius, 0) { }
     Cone(const Vector3 &start, const Vector3 &end, double radius) : Cylinder(start, end, radius, 0) { }
+};
+
+/// Arrow
+class Arrow : public Primitive
+{
+  public:
+    Arrow(double length, double radius, double headlength=-1, double headradius=-1)
+    {
+      make(length, radius, headlength, headradius);
+    }
+    
+    Arrow(const Vector3 &start, const Vector3 &end, double radius, double headlength=-1, double headradius=-1)
+    {
+      make(align(start, end), radius, headlength, headradius);
+    }
+    
+    void draw()
+    {
+      children[0]->color = color;
+      children[1]->color = color;
+      
+      Primitive::draw();
+    }
+    
+  protected:
+    void make(double length, double radius, double headlength, double headradius)
+    {
+      if (headlength < 0)
+        headlength = radius*6;
+      if (headradius < 0)
+        headradius = headlength/3;
+        
+      attach(new Cylinder(length, radius));
+      attach(new Cone(headlength, headradius))->transform = Translation({0, 0, length/2});
+    }
 };
 
 /// Cylinder with rounded endcaps
