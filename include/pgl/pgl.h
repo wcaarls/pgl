@@ -54,7 +54,7 @@ class Primitive
       list = glGenLists(1);
     }
 
-    ~Primitive()
+    virtual ~Primitive()
     {
       glDeleteLists(list, 1);
       for (size_t ii=0; ii != children.size(); ++ii)
@@ -62,7 +62,7 @@ class Primitive
       children.clear();
     }
   
-    void draw()
+    virtual void draw()
     {
       glPushMatrix();
       glMultMatrixd(transform.data);
@@ -92,7 +92,6 @@ class Primitive
       double len = vec.norm();
       vec = vec / len;
       
-      // Change to Z alignment
       double angle = acos(vec.z);
       Vector3 axis{-vec.y, vec.x, 0};
     
@@ -101,25 +100,25 @@ class Primitive
       return len;
     }
   
-    void normal(const Vector3 &v)
+    virtual void normal(const Vector3 &v)
     {
       double norm = v.norm();
     
       glNormal3d(v.x/norm, v.y/norm, v.z/norm);
     }
     
-    void vertex(const Vector3 &v)
+    virtual void vertex(const Vector3 &v)
     {
       glVertex3d(v.x, v.y, v.z);
     }
     
-    void quad(const Vector3 &v1, const Vector3 &v2, const Vector3 &v3, const Vector3 &v4)
+    virtual void quad(const Vector3 &v1, const Vector3 &v2, const Vector3 &v3, const Vector3 &v4)
     {
       triangle(v1, v2, v3);
       triangle(v3, v4, v1);
     }
 
-    void triangle(const Vector3 &v1, const Vector3 &v2, const Vector3 &v3)
+    virtual void triangle(const Vector3 &v1, const Vector3 &v2, const Vector3 &v3)
     {
       vertex(v1);
       vertex(v2);

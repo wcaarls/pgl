@@ -160,9 +160,9 @@ class Transform
       data[2] = z*x*c1 - y*s;    data[6] = z*y*c1 + x*s;    data[10] = c      + z*z*c1;
       data[3] = 0;               data[7] = 0;               data[11] = 0;
       
-      x = translation.x;
-      y = translation.y;
-      z = translation.z;
+      this->x = translation.x;
+      this->y = translation.y;
+      this->z = translation.z;
       data[15] = 1;
     }
     

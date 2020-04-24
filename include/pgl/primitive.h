@@ -74,6 +74,48 @@ class Box : public Primitive
     }
 };
 
+/// Wireframe box
+class WireBox : public Primitive
+{
+  public:
+    WireBox(const Vector3 &size)
+    {
+      make(size);
+    }
+    
+    WireBox(const Vector3 &size, const Vector3 &offset)
+    {
+      make(size);
+      transform = Translation(offset);
+    }
+    
+  protected:
+    void make(const Vector3 &size)
+    {
+      Vector3 s2 = size/2;
+      
+      Vector3 vppp( s2.x,  s2.y,  s2.z), vnpp(-s2.x,  s2.y,  s2.z), vnnp(-s2.x, -s2.y,  s2.z), vpnp( s2.x, -s2.y,  s2.z),
+              vppn( s2.x,  s2.y, -s2.z), vnpn(-s2.x,  s2.y, -s2.z), vnnn(-s2.x, -s2.y, -s2.z), vpnn( s2.x, -s2.y, -s2.z);
+    
+      glNewList(list, GL_COMPILE);
+      glBegin(GL_LINES);
+        vertex(vnnp); vertex(vpnp);
+        vertex(vnnn); vertex(vpnn);
+        vertex(vnnp); vertex(vnpp);
+        vertex(vnnn); vertex(vnpn);
+        vertex(vppp); vertex(vnpp);
+        vertex(vppn); vertex(vnpn);
+        vertex(vppp); vertex(vpnp);
+        vertex(vppn); vertex(vpnn);
+        vertex(vnnn); vertex(vnnp);
+        vertex(vpnn); vertex(vpnp);
+        vertex(vnpn); vertex(vnpp);
+        vertex(vppn); vertex(vppp);
+      glEnd();
+      glEndList();
+    }
+};
+
 /// Sphere
 class Sphere : public Primitive
 {
@@ -114,19 +156,6 @@ class Sphere : public Primitive
       glEndList();
     }
 
-    void quad(const Vector3 &v1, const Vector3 &v2, const Vector3 &v3, const Vector3 &v4)
-    {
-      triangle(v1, v2, v3);
-      triangle(v3, v4, v1);
-    }
-    
-    void triangle(const Vector3 &v1, const Vector3 &v2, const Vector3 &v3)
-    {
-      vertex(v1);
-      vertex(v2);
-      vertex(v3);
-    }
-    
     void vertex(const Vector3 &v)
     {
       normal(v);
@@ -191,20 +220,10 @@ class Cylinder : public Primitive
       glEndList();
     }
     
-    void quad(const Vector3 &v1, const Vector3 &v2, const Vector3 &v3, const Vector3 &v4)
+    void vertex(const Vector3 &v)
     {
-      triangle(v1, v2, v3);
-      triangle(v3, v4, v1);
-    }
-    
-    void triangle(const Vector3 &v1, const Vector3 &v2, const Vector3 &v3)
-    {
-      normal({v1.x, v1.y, 0});
-      vertex(v1);
-      normal({v2.x, v2.y, 0});
-      vertex(v2);
-      normal({v3.x, v3.y, 0});
-      vertex(v3);
+      normal({v.x, v.y, 0});
+      vertex(v);
     }
 };
 

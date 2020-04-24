@@ -82,8 +82,10 @@ int main(void)
   // Initialize our scene
   scene__ = new pgl::Scene();
   scene__->attach(new pgl::Box({10, 10, 0.1}));
+  scene__->attach(new pgl::WireBox({10, 10, 10}));
   scene__->attach(new pgl::Sphere(1));
   scene__->attach(box__ = new pgl::Box({2, 1, 1}, {0, 0, 1}));
+  box__->attach(new pgl::Box({1, 0, 0}, {2, 0, 1}, 1));
   scene__->attach(new pgl::Capsule({0, 0, 0}, {5, 0, 0}, 0.2))->color = {1, 0, 0};
   scene__->attach(new pgl::Capsule({0, 0, 0}, {0, 5, 0}, 0.2))->color = {0, 1, 0};
   scene__->attach(new pgl::Capsule({0, 0, 0}, {0, 0, 5}, 0.2))->color = {0, 0, 1};
