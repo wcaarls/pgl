@@ -27,6 +27,8 @@ compatibility, not speed.
 Header-only library providing quick and easy drawing of 3D primitives
 (box, sphere, cylinder, capsule), a scene graph, and camera controller.
 
+![Example](/doc/example.png)
+
 # Installation (Ubuntu 18.04)
 ```
 sudo apt install git cmake g++ libgl-dev

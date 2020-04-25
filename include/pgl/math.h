@@ -27,6 +27,17 @@
 
 namespace pgl {
 
+/** \brief 3-component vector.
+ *
+ * Individual components can be addressed through either
+ * \code
+ * vector.x
+ * \endcode
+ * or
+ * \code
+ * vector[0]
+ * \endcode
+ */
 class Vector3
 {
   public:
@@ -81,6 +92,7 @@ class Vector3
       return Vector3(x*rhs, y*rhs, z*rhs);
     }
 
+    /// Elementwise product.
     Vector3 operator*(const Vector3 &rhs) const
     {
       return Vector3(x*rhs.x, y*rhs.y, z*rhs.z);
@@ -96,6 +108,7 @@ class Vector3
       return Vector3(x/rhs.x, y/rhs.y, z/rhs.z);
     }
 
+    /// Power.
     Vector3 operator^(const double &rhs) const
     {
       return Vector3(pow(x, rhs), pow(y, rhs), pow(z, rhs));
@@ -113,6 +126,20 @@ class Vector3
     }
 };
 
+/** \brief Homogeneous coordinate transform.
+ *
+ * Column-major storage order. The translation can be addressed through either
+ * \code
+ * transform.x
+ * \endcode
+ * or
+ * \code
+ * transform[12]
+ * \endcode
+ *
+ * \note
+ * Since we're working with 3-component vectors, the last row is always [0, 0, 0, 1].
+ */
 class Transform
 {
   public:
@@ -135,11 +162,13 @@ class Transform
       set(_data);
     }
     
+    /// Specifies transform through intrinsict roll-pitch-yaw and translation.
     Transform(const Vector3 &rotation, const Vector3 &translation)
     {
       set(rotation, translation);
     }
     
+    /// Specifies transform through axis-angle and translation.
     Transform(const Vector3 &axis, const double &angle, const Vector3 &translation)
     {
       set(axis, angle, translation);
@@ -230,12 +259,14 @@ class Transform
 
 };
 
+/// Transform with zero translation.
 class Rotation : public Transform
 {
   public:
     Rotation(const Vector3 &rotation) : Transform(rotation, {0, 0, 0}) { }
 };
 
+/// Transform with identity rotation.
 class Translation : public Transform
 {
   public:

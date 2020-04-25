@@ -27,21 +27,128 @@
 
 namespace pgl {
 
-/// Box
+/**
+ * \brief Basic 3D primitive.
+ *
+ * An object that actually draws something. Derived objects generally
+ * create a display list upon construction that is drawn by this
+ * superclass.
+ *
+ * \note
+ * Objects will generally by aligned along the Z axis and centered
+ * on the origin.
+ */
+class Primitive : public Object
+{
+  public:
+    Vector3 color; ///< Primitive color.
+    
+  protected:
+    GLuint list_;  ///< Display list identifier.
+    
+  public:
+    /** \brief Default constructor.
+     *
+     * The default color is white.
+     */
+    Primitive() : color(1, 1, 1)
+    {
+      list_ = glGenLists(1);
+    }
+
+    virtual ~Primitive()
+    {
+      glDeleteLists(list_, 1);
+    }
+  
+    virtual void draw()
+    {
+      glColor3d(color.x, color.y, color.z);
+
+      glPushMatrix();
+      glMultMatrixd(transform.data);
+      
+      glCallList(list_);
+      for (size_t ii=0; ii != children.size(); ++ii)
+        children[ii]->draw();
+      glPopMatrix();
+    }
+    
+  protected:
+    /** \brief Align primitive along axis.
+     *
+     * Align a centered z-axis aligned primitive along end-start,
+     * starting at start.
+     *
+     * \returns length of vector.
+     */
+    double align(const Vector3 &start, const Vector3 &end)
+    {
+      Vector3 vec = end-start;
+      double len = vec.norm();
+      vec = vec / len;
+      
+      double angle = acos(vec.z);
+      Vector3 axis{-vec.y, vec.x, 0};
+    
+      transform = Transform(axis, angle, start)*Translation({0, 0, len/2});
+      
+      return len;
+    }
+  
+    /// Sets norm for subsequent vertices.
+    virtual void normal(const Vector3 &v)
+    {
+      double norm = v.norm();
+    
+      glNormal3d(v.x/norm, v.y/norm, v.z/norm);
+    }
+    
+    /// Enters vertex into display list.
+    virtual void vertex(const Vector3 &v)
+    {
+      glVertex3d(v.x, v.y, v.z);
+    }
+    
+    /** \brief Draws a four-sided polygon using two triangles.
+     *
+     * Assuming the polygon is in counter-clockwise order, the triangles
+     * are as well.
+     */
+    virtual void quad(const Vector3 &v1, const Vector3 &v2, const Vector3 &v3, const Vector3 &v4)
+    {
+      triangle(v1, v2, v3);
+      triangle(v3, v4, v1);
+    }
+
+    /// Draws triangle.
+    virtual void triangle(const Vector3 &v1, const Vector3 &v2, const Vector3 &v3)
+    {
+      vertex(v1);
+      vertex(v2);
+      vertex(v3);
+    }
+};
+
+/// Box primitive.
 class Box : public Primitive
 {
   public:
+    /// Specfies box size.
     Box(const Vector3 &size)
     {
       make(size);
     }
     
+    /// Specfies box size and offset.
     Box(const Vector3 &size, const Vector3 &offset)
     {
       make(size);
       transform = Translation(offset);
     }
     
+    /** \brief Specfies box start and end coordinates, as well as thickness.
+     */
     Box(const Vector3 &start, const Vector3 &end, double thickness)
     {
       make({thickness, thickness, align(start, end)});
@@ -55,7 +162,7 @@ class Box : public Primitive
       Vector3 vppp( s2.x,  s2.y,  s2.z), vnpp(-s2.x,  s2.y,  s2.z), vnnp(-s2.x, -s2.y,  s2.z), vpnp( s2.x, -s2.y,  s2.z),
               vppn( s2.x,  s2.y, -s2.z), vnpn(-s2.x,  s2.y, -s2.z), vnnn(-s2.x, -s2.y, -s2.z), vpnn( s2.x, -s2.y, -s2.z);
     
-      glNewList(list, GL_COMPILE);
+      glNewList(list_, GL_COMPILE);
       glBegin(GL_TRIANGLES);
         glNormal3d(0, 0, 1);
         quad(vnnp, vpnp, vppp, vnpp); // Z+
@@ -74,15 +181,17 @@ class Box : public Primitive
     }
 };
 
-/// Wireframe box
+/// Wireframe box primitive.
 class WireBox : public Primitive
 {
   public:
+    /// Specfies box size.
     WireBox(const Vector3 &size)
     {
       make(size);
     }
     
+    /// Specfies box size and offset.
     WireBox(const Vector3 &size, const Vector3 &offset)
     {
       make(size);
@@ -97,7 +206,7 @@ class WireBox : public Primitive
       Vector3 vppp( s2.x,  s2.y,  s2.z), vnpp(-s2.x,  s2.y,  s2.z), vnnp(-s2.x, -s2.y,  s2.z), vpnp( s2.x, -s2.y,  s2.z),
               vppn( s2.x,  s2.y, -s2.z), vnpn(-s2.x,  s2.y, -s2.z), vnnn(-s2.x, -s2.y, -s2.z), vpnn( s2.x, -s2.y, -s2.z);
     
-      glNewList(list, GL_COMPILE);
+      glNewList(list_, GL_COMPILE);
       glBegin(GL_LINES);
         vertex(vnnp); vertex(vpnp);
         vertex(vnnn); vertex(vpnn);
@@ -116,15 +225,17 @@ class WireBox : public Primitive
     }
 };
 
-/// Sphere
+/// Sphere primitive.
 class Sphere : public Primitive
 {
   public:
+    /// Specifies sphere radius.
     Sphere(double radius)
     {
       make(radius);
     }
 
+    /// Specifies sphere radius and offset.
     Sphere(double radius, const Vector3 &offset)
     {
       make(radius);
@@ -134,7 +245,7 @@ class Sphere : public Primitive
   protected:
     void make(double radius)
     {
-      glNewList(list, GL_COMPILE);
+      glNewList(list_, GL_COMPILE);
       glBegin(GL_TRIANGLES);
         for (size_t jj=0; jj != FACETS/2; ++jj)
         {
@@ -163,15 +274,26 @@ class Sphere : public Primitive
     }
 };
 
-/// Cylinder, optionally with different start and end radii
+/** \brief Generalized cylinder.
+ *
+ * The cylinder can have different start and end radii.
+ */
 class Cylinder : public Primitive
 {
   public:
+    /** \brief Specifies length, radius, and end radius.
+     *
+     * When not specified, the end radius is equal to the radius.
+     */
     Cylinder(double length, double radius, double endradius=-1)
     {
       make(length, radius, endradius);
     }
     
+    /** \brief Specifies start and end coordinates, as well as radius and end radius.
+     *
+     * When not specified, the end radius is equal to the radius.
+     */
     Cylinder(const Vector3 &start, const Vector3 &end, double radius, double endradius=-1)
     {
       make(align(start, end), radius, endradius);
@@ -183,7 +305,7 @@ class Cylinder : public Primitive
       if (endradius < 0)
         endradius = radius;
     
-      glNewList(list, GL_COMPILE);
+      glNewList(list_, GL_COMPILE);
       
       // Body
       glBegin(GL_TRIANGLES);
@@ -227,23 +349,41 @@ class Cylinder : public Primitive
     }
 };
 
-/// Cylinder ending in a point
+/// Cylinder ending in a point.
 class Cone : public Cylinder
 {
   public:
+    /// Specifies length and radius.
     Cone(double length, double radius) : Cylinder(length, radius, 0) { }
+    
+    /// Specifies start and end coordinates, as well as radius.
     Cone(const Vector3 &start, const Vector3 &end, double radius) : Cylinder(start, end, radius, 0) { }
 };
 
-/// Arrow
+/** \brief Arrow primitive.
+ *
+ * Consists of a Cylinder body and a Cone head.
+ */
 class Arrow : public Primitive
 {
+  protected:
+    Cylinder *body_; ///< Arrow body.
+    Cone *head_;     ///< Arrow head.
+
   public:
+    /** \brief Specifies arrow length, radius, head length, and head radius.
+     *
+     * When not specified, head length is radius*6, while head radius is head length/2.
+     */
     Arrow(double length, double radius, double headlength=-1, double headradius=-1)
     {
       make(length, radius, headlength, headradius);
     }
     
+    /** \brief Specifies start and end coordinates, as well as radius, head length, and head radius.
+     *
+     * When not specified, head length is radius*6, while head radius is head length/2.
+     */
     Arrow(const Vector3 &start, const Vector3 &end, double radius, double headlength=-1, double headradius=-1)
     {
       make(align(start, end), radius, headlength, headradius);
@@ -251,10 +391,10 @@ class Arrow : public Primitive
     
     void draw()
     {
-      children[0]->color = color;
-      children[1]->color = color;
+      body_->color = color;
+      head_->color = color;
       
-      Primitive::draw();
+      Object::draw();
     }
     
   protected:
@@ -265,20 +405,25 @@ class Arrow : public Primitive
       if (headradius < 0)
         headradius = headlength/3;
         
-      attach(new Cylinder(length, radius));
-      attach(new Cone(headlength, headradius))->transform = Translation({0, 0, length/2});
+      attach(body_ = new Cylinder(length, radius));
+      attach(head_ = new Cone(headlength, headradius))->transform = Translation({0, 0, length/2});
     }
 };
 
-/// Cylinder with rounded endcaps
+/** \brief Capsule primitive.
+ *
+ * A capsule is a cylinder with rounded endcaps.
+ */
 class Capsule : public Primitive
 {
   public:
+    /// Specifies length and radius.
     Capsule(double length, double radius)
     {
       make(length, radius);
     }
     
+    /// Specifies start and end coordinates, as well as radius.
     Capsule(const Vector3 &start, const Vector3 &end, double radius)
     {
       make(align(start, end), radius);
@@ -287,7 +432,7 @@ class Capsule : public Primitive
   protected:
     void make(double length, double radius)
     {
-      glNewList(list, GL_COMPILE);
+      glNewList(list_, GL_COMPILE);
       glBegin(GL_TRIANGLES);
       
       // Start at bottom cap
