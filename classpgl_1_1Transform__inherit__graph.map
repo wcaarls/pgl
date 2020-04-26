@@ -1,0 +1,4 @@
+<map id="pgl::Transform" name="pgl::Transform">
+<area shape="rect" id="node2" href="$classpgl_1_1Rotation.html" title="Transform with zero translation. " alt="" coords="5,80,101,107"/>
+<area shape="rect" id="node3" href="$classpgl_1_1Translation.html" title="Transform with identity rotation. " alt="" coords="126,80,237,107"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="pgl::OrbitController" name="pgl::OrbitController">
+<area shape="rect" id="node2" href="$classpgl_1_1Controller.html" title="Camera controller. " alt="" coords="53,288,155,315"/>
+<area shape="rect" id="node3" href="$classpgl_1_1Scene.html" title="Defines camera position and frustum. " alt="" coords="61,184,145,211"/>
+<area shape="rect" id="node4" href="$classpgl_1_1Object.html" title="Object in a scene. " alt="" coords="16,95,101,121"/>
+<area shape="rect" id="node5" href="$classpgl_1_1Transform.html" title="Homogeneous coordinate transform. " alt="" coords="5,5,112,32"/>
+<area shape="rect" id="node6" href="$classpgl_1_1Vector3.html" title="3&#45;component vector. " alt="" coords="137,95,229,121"/>
+</map>
