@@ -53,6 +53,6 @@ make && sudo make install
 
 # Documentation
 
-https://pgl.github.io/index.html
+https://wcaarls.github.io/pgl/index.html
 
 See also the [example](src/example.cpp)

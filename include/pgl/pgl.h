@@ -45,6 +45,8 @@ namespace pgl {
  *
  * PGL, a primitive OpenGL 3D primitive library
  *
+ * https://github.com/wcaarls/pgl
+ *
  * \image html example.png "Example"
  * 
  * The library consists of the following main classes:
