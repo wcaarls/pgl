@@ -1,6 +1,8 @@
-/*
- * PGL, a primitive OpenGL 3D primitive library
- * This file contains vector math functions
+/** \file math.h
+ *
+ * PGL, a primitive OpenGL 3D primitive library.
+ *
+ * This file contains vector math functions.
  *
  * (c) 2020, Wouter Caarls.
  *
@@ -17,8 +19,8 @@
  * limitations under the License.
  */
 
-#ifndef __PGL_MATH_H_
-#define __PGL_MATH_H_
+#ifndef PGL_MATH_H_
+#define PGL_MATH_H_
 
 #include <ostream>
 
@@ -138,7 +140,9 @@ class Vector3
  * \endcode
  *
  * \note
- * Since we're working with 3-component vectors, the last row is always [0, 0, 0, 1].
+ * Since we're working with 3-component vectors, a matrix-vector product
+ * will not apply the last row of the matrix. It is, however, stored for
+ * potential other uses.
  */
 class Transform
 {
@@ -226,10 +230,8 @@ class Transform
     Transform operator*(const Transform &rhs) const
     {
       Transform result;
-      result[3] = result[7] = result[11] = 0;
-      result[15] = 1;
     
-      for (unsigned char ii = 0; ii < 3; ++ii)
+      for (unsigned char ii = 0; ii < 4; ++ii)
         for (unsigned char jj = 0; jj < 4; ++jj)
         {
           double sum = 0;
@@ -275,4 +277,4 @@ class Translation : public Transform
 
 }
 
-#endif // __PGL_MATH_H_
+#endif // PGL_MATH_H_

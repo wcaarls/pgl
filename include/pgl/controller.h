@@ -1,6 +1,8 @@
-/*
- * PGL, a primitive OpenGL 3D primitive library
- * This file contains various scene controllers
+/** \file controller.h
+ *
+ * PGL, a primitive OpenGL 3D primitive library.
+ *
+ * This file contains various scene controllers.
  *
  * (c) 2020, Wouter Caarls.
  *
@@ -17,8 +19,8 @@
  * limitations under the License.
  */
 
-#ifndef __PGL_CONTROLLER_H_
-#define __PGL_CONTROLLER_H_
+#ifndef PGL_CONTROLLER_H_
+#define PGL_CONTROLLER_H_
 
 #include "pgl.h"
 
@@ -106,4 +108,4 @@ class OrbitController : public Controller
 
 }
 
-#endif // __PGL_CONTROLLER_H_
+#endif // PGL_CONTROLLER_H_

@@ -1,6 +1,8 @@
-/*
- * PGL, a primitive OpenGL 3D primitive library
- * This file contains various 3D primitives
+/** \file primitive.h
+ *
+ * PGL, a primitive OpenGL 3D primitive library.
+ *
+ * This file contains various 3D primitives.
  *
  * (c) 2020, Wouter Caarls.
  *
@@ -17,8 +19,8 @@
  * limitations under the License.
  */
 
-#ifndef __PGL_PRIMITIVE_H_
-#define __PGL_PRIMITIVE_H_
+#ifndef PGL_PRIMITIVE_H_
+#define PGL_PRIMITIVE_H_
 
 #include "pgl.h"
 
@@ -494,4 +496,4 @@ class Capsule : public Primitive
 
 }
 
-#endif // __PGL_PRIMITIVE_H_
+#endif // PGL_PRIMITIVE_H_

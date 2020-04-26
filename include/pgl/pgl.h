@@ -1,6 +1,8 @@
-/*
- * PGL, a primitive OpenGL 3D primitive library
- * Main headerfile
+/** \file pgl.h
+ *
+ * PGL, a primitive OpenGL 3D primitive library.
+ *
+ * Main headerfile.
  *
  * (c) 2020, Wouter Caarls.
  *
@@ -17,8 +19,8 @@
  * limitations under the License.
  */
 
-#ifndef __PGL_PGL_H_
-#define __PGL_PGL_H_
+#ifndef PGL_PGL_H_
+#define PGL_PGL_H_
 
 #include "math.h"
 
@@ -37,6 +39,60 @@
 #define PGL_MOUSE_BUTTON_MIDDLE 2
 
 namespace pgl {
+
+/**
+ * \mainpage
+ *
+ * PGL, a primitive OpenGL 3D primitive library
+ *
+ * \image html example.png "Example"
+ * 
+ * The library consists of the following main classes:
+ *
+ * * Object, the basic node structure of the scene graph.
+ *   + Primitive, something that can be drawn.
+ *     - Box, a box.
+ *     - WireBox, a wireframe box.
+ *     - Sphere, a sphere.
+ *     - Cylinder, a generalized cylinder.
+ *     - Cone, a cone,
+ *     - Arrow, an arrow
+ *     - Capsule, a cylinder with rounded encaps.
+ *   + Scene, a collection of objects and information on how to draw them.
+ * * Controller, which adjusts the camera viewpoint of an associated Scene.
+ *
+ * There are also utility Vector and matrix functions to specify points and
+ * coordinate Trasform%ations such as Rotation%s and Translation%s. They
+ * mostly behave like you would expect them to.
+ *
+ * In general, the classes have public members that can be accessed directly,
+ * such as a Primitive::transform or Scene::fovy. 
+ *
+ * The code to generate the example above is essentially
+ * \code
+ *   // Initialize our scene
+ *   scene = new pgl::Scene();
+ *   scene->attach(new pgl::Box({2, 2, 0.05}, {0, 0, -1.025}));
+ *   scene->attach(new pgl::WireBox({2, 2, 2}));
+ *   scene->attach(new pgl::Sphere(0.05));
+ *   scene->attach(new pgl::Arrow({-1, -1, -1}, { 0, -1, -1}, 0.02))->color = {1, 0, 0};
+ *   scene->attach(new pgl::Arrow({-1, -1, -1}, {-1,  0, -1}, 0.02))->color = {0, 1, 0};
+ *   scene->attach(new pgl::Arrow({-1, -1, -1}, {-1, -1, 0}, 0.02))->color = {0, 0, 1};
+ *   
+ *   // Add a custom object
+ *   scene->attach(object = new pgl::Object());
+ *   object->attach(new pgl::Capsule({-0.3, 0, 0}, {0.3, 0, 0}, 0.02))->color = {1, 0, 0};
+ *   object->attach(new pgl::Capsule({0, -0.3, 0}, {0, 0.3, 0}, 0.02))->color = {0, 1, 0};
+ *
+ *   // Initialize orbit controller
+ *   controller = new pgl::OrbitController(scene);
+ *   controller->view(0.5, 0.4, 4);
+ * \endcode
+ *
+ * To enable mouse interaction, the Controller's callback functions must be
+ * appropriately hooked into the window system. They are compatible with GLFW
+ * constants.
+ */
 
 /**
  * \brief Object in a scene.
@@ -76,7 +132,7 @@ class Object
       glPopMatrix();
     }
     
-    /** \brief Attach child to list of sub-objects.
+    /** \brief Add child to list of sub-objects.
      *
      * \returns attached child. This allows code like
      * \code
@@ -173,4 +229,4 @@ class Controller
 #include "primitive.h"
 #include "controller.h"
 
-#endif // __PGL_PGL_H_
+#endif // PGL_PGL_H_

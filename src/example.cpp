@@ -1,23 +1,39 @@
-#include "pgl/pgl.h"
+/** \file example.cpp
+ *
+ * PGL, a primitive OpenGL 3D primitive library.
+ *
+ * Example for basic PGL usage.
+ *
+ * (c) 2020, Wouter Caarls.
+ *
+ * Permission to use, copy, modify, and/or distribute this software for any
+ * purpose with or without fee is hereby granted.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ */
+
+#include <pgl/pgl.h>
 
 #include <GLFW/glfw3.h>
-
 #include <iostream>
-
 #include <unistd.h>
 
-using namespace pgl;
-
 bool stop__ = false;
-Scene *scene__;
-Object *object__;
-OrbitController *controller__;
+pgl::Scene *scene__;
+pgl::Object *object__;
+pgl::OrbitController *controller__;
 
 void refresh(GLFWwindow* window)
 {
   scene__->draw();
   
-  object__->transform = Rotation({0, 0, 0.01}) * object__->transform;
+  object__->transform = pgl::Rotation({0, 0, 0.01}) * object__->transform;
   
   glfwSwapBuffers(window);
 }
@@ -77,12 +93,12 @@ int main(void)
   scene__->attach(new pgl::Arrow({-1, -1, -1}, {-1, -1, 0}, 0.02))->color = {0, 0, 1};
   
   // Add a custom object
-  scene__->attach(object__ = new Object());
-  object__->attach(new Capsule({-0.3, 0, 0}, {0.3, 0, 0}, 0.02))->color = {1, 0, 0};
-  object__->attach(new Capsule({0, -0.3, 0}, {0, 0.3, 0}, 0.02))->color = {0, 1, 0};
+  scene__->attach(object__ = new pgl::Object());
+  object__->attach(new pgl::Capsule({-0.3, 0, 0}, {0.3, 0, 0}, 0.02))->color = {1, 0, 0};
+  object__->attach(new pgl::Capsule({0, -0.3, 0}, {0, 0.3, 0}, 0.02))->color = {0, 1, 0};
   
   // Initialize orbit controller
-  controller__ = new OrbitController(scene__);
+  controller__ = new pgl::OrbitController(scene__);
   controller__->view(0.5, 0.4, 4);
 
   // Register callbacks for orbit controller

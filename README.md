@@ -21,13 +21,17 @@ limitations under the License.
 
 "When all you want to do is draw some boxes"
 
-WARNING: Uses legacy OpenGL 2.1 functions. Built for ease of use and glx
-compatibility, not speed.
-
 Header-only library providing quick and easy drawing of 3D primitives
 (box, sphere, cylinder, capsule), a scene graph, and camera controller.
 
-![Example](/doc/example.png)
+---
+**WARNING**
+
+Uses legacy OpenGL functions. Built for ease of use and glx compatibility,
+not speed.
+---
+
+![Example](doc/example.png)
 
 # Installation (Ubuntu 18.04)
 ```
@@ -47,6 +51,8 @@ cmake ..
 make && sudo make install
 ```
 
-# Using
+# Documentation
 
-See the [example](src/example.cpp)
+https://pgl.github.io/index.html
+
+See also the [example](src/example.cpp)

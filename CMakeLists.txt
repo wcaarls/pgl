@@ -22,3 +22,9 @@ if(OPENGL_FOUND AND GLFW_FOUND)
 endif()
 
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/pgl DESTINATION include FILES_MATCHING PATTERN "*.h")
+
+# Documentation
+find_package(Doxygen)
+if (DOXYGEN_FOUND)
+  add_custom_target(doc COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/doc/Doxyfile)
+endif()
