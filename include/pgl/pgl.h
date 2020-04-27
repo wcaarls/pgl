@@ -63,8 +63,8 @@ namespace pgl {
  *   + Scene, a collection of objects and information on how to draw them.
  * * Controller, which adjusts the camera viewpoint of an associated Scene.
  *
- * There are also utility Vector and matrix functions to specify points and
- * coordinate Trasform%ations such as Rotation%s and Translation%s. They
+ * There are also utility Vector3 and matrix functions to specify points and
+ * coordinate Transform%ations such as Rotation%s and Translation%s. They
  * mostly behave like you would expect them to.
  *
  * In general, the classes have public members that can be accessed directly,
