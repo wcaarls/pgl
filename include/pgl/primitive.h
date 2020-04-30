@@ -46,7 +46,7 @@ class Primitive : public Object
     Vector3 color; ///< Primitive color.
     
   protected:
-    GLuint list_;  ///< Display list identifier.
+    GLuint list_;  ///< OpenGL display list identifier.
     
   public:
     /** \brief Default constructor.
@@ -63,6 +63,7 @@ class Primitive : public Object
       glDeleteLists(list_, 1);
     }
   
+    /// Draw primitive and its children.
     virtual void draw()
     {
       glColor3d(color.x, color.y, color.z);
@@ -101,9 +102,9 @@ class Primitive : public Object
     /// Sets norm for subsequent vertices.
     virtual void normal(const Vector3 &v)
     {
-      double norm = v.norm();
+      Vector3 n = v/v.normsq();
     
-      glNormal3d(v.x/norm, v.y/norm, v.z/norm);
+      glNormal3d(n.x, n.y, n.z);
     }
     
     /// Enters vertex into display list.
@@ -132,18 +133,12 @@ class Primitive : public Object
     }
 };
 
-/// Box primitive.
+/// Box Primitive.
 class Box : public Primitive
 {
   public:
-    /// Specfies box size.
-    Box(const Vector3 &size)
-    {
-      make(size);
-    }
-    
-    /// Specfies box size and offset.
-    Box(const Vector3 &size, const Vector3 &offset)
+    /// Specfies box size and optional offset.
+    Box(const Vector3 &size, const Vector3 &offset = {0, 0 ,0})
     {
       make(size);
       transform = Translation(offset);
@@ -183,18 +178,12 @@ class Box : public Primitive
     }
 };
 
-/// Wireframe box primitive.
+/// Wireframe box Primitive.
 class WireBox : public Primitive
 {
   public:
-    /// Specfies box size.
-    WireBox(const Vector3 &size)
-    {
-      make(size);
-    }
-    
-    /// Specfies box size and offset.
-    WireBox(const Vector3 &size, const Vector3 &offset)
+    /// Specfies box size and optional offset.
+    WireBox(const Vector3 &size, const Vector3 &offset = {0, 0, 0})
     {
       make(size);
       transform = Translation(offset);
@@ -209,6 +198,7 @@ class WireBox : public Primitive
               vppn( s2.x,  s2.y, -s2.z), vnpn(-s2.x,  s2.y, -s2.z), vnnn(-s2.x, -s2.y, -s2.z), vpnn( s2.x, -s2.y, -s2.z);
     
       glNewList(list_, GL_COMPILE);
+      glDisable(GL_LIGHTING);
       glBegin(GL_LINES);
         vertex(vnnp); vertex(vpnp);
         vertex(vnnn); vertex(vpnn);
@@ -223,22 +213,17 @@ class WireBox : public Primitive
         vertex(vnpn); vertex(vnpp);
         vertex(vppn); vertex(vppp);
       glEnd();
+      glEnable(GL_LIGHTING);
       glEndList();
     }
 };
 
-/// Sphere primitive.
+/// Sphere Primitive.
 class Sphere : public Primitive
 {
   public:
-    /// Specifies sphere radius.
-    Sphere(double radius)
-    {
-      make(radius);
-    }
-
-    /// Specifies sphere radius and offset.
-    Sphere(double radius, const Vector3 &offset)
+    /// Specifies sphere radius and optional offset.
+    Sphere(double radius, const Vector3 &offset = {0, 0, 0})
     {
       make(radius);
       transform = Translation(offset);
@@ -276,7 +261,7 @@ class Sphere : public Primitive
     }
 };
 
-/** \brief Generalized cylinder.
+/** \brief Generalized cylinder Primitive.
  *
  * The cylinder can have different start and end radii.
  */
@@ -362,7 +347,7 @@ class Cone : public Cylinder
     Cone(const Vector3 &start, const Vector3 &end, double radius) : Cylinder(start, end, radius, 0) { }
 };
 
-/** \brief Arrow primitive.
+/** \brief Arrow Primitive.
  *
  * Consists of a Cylinder body and a Cone head.
  */
@@ -412,7 +397,7 @@ class Arrow : public Primitive
     }
 };
 
-/** \brief Capsule primitive.
+/** \brief Capsule Primitive.
  *
  * A capsule is a cylinder with rounded endcaps.
  */
@@ -491,6 +476,157 @@ class Capsule : public Primitive
     {
       normal({v.x, v.y, v.z-z});
       Primitive::vertex(v);
+    }
+};
+
+/** \brief Plane Primitive.
+ *
+ * Draws a (textured) plane. The texture can be repeated, for example to
+ * create a near infinite ground plane.
+ */
+class Plane : public Primitive
+{
+  protected:
+    Texture texture_;
+
+  public:
+    /** \brief Specifies vectors along which the plane is aligned.
+     *
+     * Optional arguments are the offset, Texture to be applied, and
+     * the number of times the texture should be repeated.
+     *
+     * \note
+     * Be sure that the normal of the two vectors points towards the
+     * direction from which the plane must be visible.
+     */
+    Plane(const Vector3 &vx, const Vector3 &vy, const Vector3 &offset = {0, 0, 0}, const Texture &texture = Texture(), int repeat=1)
+    {
+      texture_ = texture;
+      make(vx, vy, repeat);
+      transform = Translation(offset);
+    }
+  
+  protected:
+    void make(const Vector3 &vx, const Vector3 &vy, int repeat)
+    {
+      Vector3 n = vx.cross(vy);
+      Vector3 v1 = -vx-vy, v2 = vx-vy, v3=vx+vy, v4=-vx+vy;
+      
+      glNewList(list_, GL_COMPILE);
+      if (texture_)
+      {
+        glEnable(GL_TEXTURE_2D);
+        texture_.bind();
+        glBegin(GL_QUADS);
+          normal(n);
+          glTexCoord2d(0, 0);
+          vertex(v1*repeat);
+          glTexCoord2d(repeat, 0);
+          vertex(v2*repeat);
+          glTexCoord2d(repeat, repeat);
+          vertex(v3*repeat);
+          glTexCoord2d(0, repeat);
+          vertex(v4*repeat);
+        glEnd();
+        glDisable(GL_TEXTURE_2D);
+      }
+      else        
+      {
+        glBegin(GL_QUADS);
+          normal(n);
+          vertex(v1*repeat);
+          vertex(v2*repeat);
+          vertex(v3*repeat);
+          vertex(v4*repeat);
+        glEnd();
+      }
+      glEndList();
+    }
+};
+
+/** \brief STL model.
+ *
+ * Reads model from a binary STL file.
+ *
+ * \note
+ * STL files have arbitrary scale and no color information. The
+ * scale can therefore be specified in the constructor, and the
+ * color has to be set afterwards in the same way as the other
+ * primitives. The entire model will have the same color.
+ */
+class Model : public Primitive
+{
+  protected:
+    struct Triangle
+    {
+      float n[3], v1[3], v2[3], v3[3];
+      uint16_t attribute;
+    };
+
+  public:
+    /// Specifies model file name and optional scale.
+    Model(const std::string &file, double scale=1)
+    {
+      make(file, scale);
+    }
+    
+    /// Specifies model file name, offset, and optional scale.
+    Model(const std::string &file, const Vector3 &offset, double scale=1)
+    {
+      make(file, scale);
+      transform = Translation(offset);
+    }
+    
+  protected:
+    void make(const std::string &file, double scale)
+    {
+      std::ifstream ifs(file);
+      
+      // Read header
+      uint8_t header[80];
+      uint8_t numchar[4];
+      
+      ifs.read((char*)header, 80);
+      ifs.read((char*)numchar, 4);
+      
+      if (!ifs.good())
+      {
+        std::cerr << file << " is not a valid binary STL" << std::endl;
+        return;
+      }
+        
+      uint32_t numint = ((uint32_t)numchar[0]<<0) + ((uint32_t)numchar[1]<<8) + ((uint32_t)numchar[2]<<16) + ((uint32_t)numchar[3]<<24);
+      
+      glNewList(list_, GL_COMPILE);
+      glBegin(GL_TRIANGLES);
+        
+      // Read triangles
+      for (size_t ii=0; ii != numint; ++ii)
+      {
+        Triangle t;
+        ifs.read((char*)&t, 50);
+        
+        if (!ifs.good())
+        {
+          std::cerr << file << " is truncated" << std::endl;
+          break;
+        }
+          
+        Vector3 n(t.n);
+        Vector3 v1(t.v1), v2(t.v2), v3(t.v3);
+        
+        // Calculate normal, if not given
+        if (n.norm() == 0)
+          n = (v2-v1).cross(v3-v1);
+        
+        normal(n);
+        vertex(v1*scale);
+        vertex(v2*scale);
+        vertex(v3*scale);
+      }
+      
+      glEnd();
+      glEndList();
     }
 };
 

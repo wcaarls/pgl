@@ -25,13 +25,13 @@
 #include <unistd.h>
 
 bool stop__ = false;
-pgl::Scene *scene__;
+pgl::Camera *camera__;
 pgl::Object *object__;
 pgl::OrbitController *controller__;
 
 void refresh(GLFWwindow* window)
 {
-  scene__->draw();
+  camera__->draw();
   
   object__->transform = pgl::Rotation({0, 0, 0.01}) * object__->transform;
   
@@ -84,21 +84,32 @@ int main(void)
   glfwMakeContextCurrent(window);
   
   // Initialize our scene
-  scene__ = new pgl::Scene();
-  scene__->attach(new pgl::Box({2, 2, 0.05}, {0, 0, -1.025}));
-  scene__->attach(new pgl::WireBox({2, 2, 2}));
-  scene__->attach(new pgl::Sphere(0.05));
-  scene__->attach(new pgl::Arrow({-1, -1, -1}, { 0, -1, -1}, 0.02))->color = {1, 0, 0};
-  scene__->attach(new pgl::Arrow({-1, -1, -1}, {-1,  0, -1}, 0.02))->color = {0, 1, 0};
-  scene__->attach(new pgl::Arrow({-1, -1, -1}, {-1, -1, 0}, 0.02))->color = {0, 0, 1};
+  auto scene = new pgl::Scene();
+  scene->attach(new pgl::Box({2, 2, 0.05}, {0, 0, -1}));
+  scene->attach(new pgl::WireBox({2, 2, 2}));
+  scene->attach(new pgl::Sphere(0.05));
+  scene->attach(new pgl::Arrow({-1, -1, -1}, { 0, -1, -1}, 0.02))->color = {1, 0, 0};
+  scene->attach(new pgl::Arrow({-1, -1, -1}, {-1,  0, -1}, 0.02))->color = {0, 1, 0};
+  scene->attach(new pgl::Arrow({-1, -1, -1}, {-1, -1, 0}, 0.02))->color = {0, 0, 1};
   
-  // Add a custom object
-  scene__->attach(object__ = new pgl::Object());
+  // Add a custom object that we'll animate
+  scene->attach(object__ = new pgl::Object());
   object__->attach(new pgl::Capsule({-0.3, 0, 0}, {0.3, 0, 0}, 0.02))->color = {1, 0, 0};
   object__->attach(new pgl::Capsule({0, -0.3, 0}, {0, 0.3, 0}, 0.02))->color = {0, 1, 0};
   
+  // Add STL model
+  scene->attach(new pgl::Model("teapot.stl", {0, 0, -1}, 0.1))->color = {1, 1, 0};
+
+  // Add some planes
+  scene->attach(new pgl::Plane({-100, 0, 0}, {0, 100, 0}, {0, 0, 10}))->color = {0.5, 0.5, 1};
+  scene->attach(new pgl::Plane({1, 0, 0}, {0, 1, 0}, {0, 0, -1}, pgl::Texture("ceramic-tiles.ppm"), 9));
+  scene->attach(new pgl::Plane({1, 0, 0}, {0, 0, 1}, {0, 1, 0}, pgl::Checkerboard4x4()))->color = {0, 1, 1};
+  
+  // Initialize camera
+  camera__ = new pgl::Camera(scene);
+  
   // Initialize orbit controller
-  controller__ = new pgl::OrbitController(scene__);
+  controller__ = new pgl::OrbitController(camera__);
   controller__->view(0.5, 0.4, 4);
 
   // Register callbacks for orbit controller
@@ -131,7 +142,8 @@ int main(void)
   glfwTerminate();
   
   delete controller__;
-  delete scene__;
+  delete camera__;
+  delete scene;
 
   return 0;
 }

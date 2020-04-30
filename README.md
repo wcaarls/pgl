@@ -19,19 +19,21 @@ limitations under the License.
 
 # Introduction
 
-"When all you want to do is draw some boxes"
+*When all you want to do is draw some boxes*
 
 Header-only library providing quick and easy drawing of 3D primitives
 (box, sphere, cylinder, capsule), a scene graph, and camera controller.
 
 ---
+
 **WARNING**
 
 Uses legacy OpenGL functions. Built for ease of use and glx compatibility,
 not speed.
+
 ---
 
-![Example](doc/example.png)
+![Example](doc/example.jpg)
 
 # Installation (Ubuntu 18.04)
 ```

@@ -53,6 +53,13 @@ class Vector3
     };
     
   public:
+    Vector3(float _data[3])
+    {
+      data[0] = (double)_data[0];
+      data[1] = (double)_data[1];
+      data[2] = (double)_data[2];
+    }
+    
     Vector3(double _data[3])
     {
       data[0] = _data[0];
@@ -116,9 +123,19 @@ class Vector3
       return Vector3(pow(x, rhs), pow(y, rhs), pow(z, rhs));
     }
     
+    Vector3 cross(const Vector3 &rhs) const
+    {
+      return Vector3(y*rhs.z - z*rhs.y, z*rhs.x-x*rhs.z, x*rhs.y - y*rhs.x);
+    }
+    
     double norm() const
     {
-      return sqrt(x*x+y*y+z*z);
+      return sqrt(normsq());
+    }
+
+    double normsq() const
+    {
+      return x*x+y*y+z*z;
     }
 
     friend std::ostream &operator<<(std::ostream &os, const Vector3 &obj)

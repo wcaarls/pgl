@@ -2,7 +2,7 @@
  *
  * PGL, a primitive OpenGL 3D primitive library.
  *
- * This file contains various scene controllers.
+ * This file contains various camera controllers.
  *
  * (c) 2020, Wouter Caarls.
  *
@@ -26,7 +26,7 @@
 
 namespace pgl {
 
-/// Camera controller which orbits around a center
+/// Camera Controller which orbits around a center
 class OrbitController : public Controller
 {
   public:
@@ -40,7 +40,7 @@ class OrbitController : public Controller
     enum {modeNone, modeAngle, modeDistance, modeCenter} mode_;
     
   public:
-    OrbitController(Scene *_scene) : Controller(_scene), center{0, 0, 0}, azimuth(60*M_PI/180), elevation(35*M_PI/180), distance(2), mode_(modeNone)
+    OrbitController(Camera *_camera) : Controller(_camera), center{0, 0, 0}, azimuth(60*M_PI/180), elevation(35*M_PI/180), distance(2), mode_(modeNone)
     {
       apply();
     }
@@ -102,7 +102,7 @@ class OrbitController : public Controller
     
     void apply()
     {
-      scene->transform = Transform({-0.5*M_PI+elevation, 0, 0}, {0, 0, -distance})*Rotation({0, 0, -azimuth})*Translation(-center);
+      camera->transform = Transform({-0.5*M_PI+elevation, 0, 0}, {0, 0, -distance})*Rotation({0, 0, -azimuth})*Translation(-center);
     }
 };
 
