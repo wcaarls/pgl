@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['fovy',['fovy',['../classpgl_1_1Scene.html#a9a58bd1e5aa3d0200b55331252ad3ee7',1,'pgl::Scene']]]
+  ['fovy',['fovy',['../classpgl_1_1Camera.html#a1c1e0ea4182021ad182697f3f9f382e7',1,'pgl::Camera']]]
 ];

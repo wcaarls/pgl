@@ -1,3 +1,4 @@
 <map id="pgl::Object" name="pgl::Object">
-<area shape="rect" id="node2" href="$classpgl_1_1Transform.html" title="Homogeneous coordinate transform. " alt="" coords="5,5,112,32"/>
+<area shape="rect" id="node2" href="$classpgl_1_1Node.html" title="Node in the scene graph. " alt="" coords="5,5,84,32"/>
+<area shape="rect" id="node3" href="$classpgl_1_1Transform.html" title="Homogeneous coordinate transform. " alt="" coords="109,5,215,32"/>
 </map>

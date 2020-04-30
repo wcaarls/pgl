@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['scene',['scene',['../classpgl_1_1Controller.html#aa0763002edc33d86e59cd5ebc2fc71da',1,'pgl::Controller']]]
+  ['scene',['scene',['../classpgl_1_1Camera.html#a5103e5ca07c96ef04de223859ec57aa4',1,'pgl::Camera']]]
 ];

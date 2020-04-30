@@ -1,6 +1,7 @@
 <map id="pgl::Controller" name="pgl::Controller">
-<area shape="rect" id="node2" href="$classpgl_1_1Scene.html" title="Defines camera position and frustum. " alt="" coords="101,184,185,211"/>
-<area shape="rect" id="node3" href="$classpgl_1_1Object.html" title="Object in a scene. " alt="" coords="16,95,101,121"/>
-<area shape="rect" id="node4" href="$classpgl_1_1Transform.html" title="Homogeneous coordinate transform. " alt="" coords="5,5,112,32"/>
-<area shape="rect" id="node5" href="$classpgl_1_1Vector3.html" title="3&#45;component vector. " alt="" coords="126,95,218,121"/>
+<area shape="rect" id="node2" href="$classpgl_1_1Camera.html" title="Defines camera position and frustum. " alt="" coords="57,184,151,211"/>
+<area shape="rect" id="node3" href="$classpgl_1_1Transform.html" title="Homogeneous coordinate transform. " alt="" coords="5,95,112,121"/>
+<area shape="rect" id="node4" href="$classpgl_1_1Scene.html" title="Root node of the scene graph. " alt="" coords="137,95,221,121"/>
+<area shape="rect" id="node5" href="$classpgl_1_1Node.html" title="Node in the scene graph. " alt="" coords="85,5,163,32"/>
+<area shape="rect" id="node6" href="$classpgl_1_1Vector3.html" title="3&#45;component vector. " alt="" coords="187,5,279,32"/>
 </map>

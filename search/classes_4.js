@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['primitive',['Primitive',['../classpgl_1_1Primitive.html',1,'pgl']]]
+  ['node',['Node',['../classpgl_1_1Node.html',1,'pgl']]]
 ];

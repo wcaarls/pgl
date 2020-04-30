@@ -1,0 +1,5 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classpgl_1_1Transform.html" title="Homogeneous coordinate transform. " alt="" coords="5,31,112,57"/>
+<area shape="rect" id="node2" href="$classpgl_1_1Rotation.html" title="Transform with zero translation. " alt="" coords="167,5,263,32"/>
+<area shape="rect" id="node3" href="$classpgl_1_1Translation.html" title="Transform with identity rotation. " alt="" coords="160,56,271,83"/>
+</map>

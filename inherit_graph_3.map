@@ -1,3 +1,15 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classpgl_1_1Vector3.html" title="3&#45;component vector. " alt="" coords="5,5,97,32"/>
+<area shape="rect" id="node1" href="$classpgl_1_1Node.html" title="Node in the scene graph. " alt="" coords="5,208,84,235"/>
+<area shape="rect" id="node2" href="$classpgl_1_1Object.html" title="Object in a scene. " alt="" coords="132,183,217,209"/>
+<area shape="rect" id="node13" href="$classpgl_1_1Scene.html" title="Root node of the scene graph. " alt="" coords="133,233,217,260"/>
+<area shape="rect" id="node3" href="$classpgl_1_1Primitive.html" title="Basic 3D primitive. " alt="" coords="265,183,364,209"/>
+<area shape="rect" id="node4" href="$classpgl_1_1Arrow.html" title="Arrow Primitive. " alt="" coords="420,5,501,32"/>
+<area shape="rect" id="node5" href="$classpgl_1_1Box.html" title="Box Primitive. " alt="" coords="425,56,496,83"/>
+<area shape="rect" id="node6" href="$classpgl_1_1Capsule.html" title="Capsule Primitive. " alt="" coords="413,107,508,133"/>
+<area shape="rect" id="node7" href="$classpgl_1_1Cylinder.html" title="Generalized cylinder Primitive. " alt="" coords="413,157,508,184"/>
+<area shape="rect" id="node9" href="$classpgl_1_1Model.html" title="STL model. " alt="" coords="419,208,502,235"/>
+<area shape="rect" id="node10" href="$classpgl_1_1Plane.html" title="Plane Primitive. " alt="" coords="421,259,501,285"/>
+<area shape="rect" id="node11" href="$classpgl_1_1Sphere.html" title="Sphere Primitive. " alt="" coords="417,309,505,336"/>
+<area shape="rect" id="node12" href="$classpgl_1_1WireBox.html" title="Wireframe box Primitive. " alt="" coords="412,360,509,387"/>
+<area shape="rect" id="node8" href="$classpgl_1_1Cone.html" title="Cylinder ending in a point. " alt="" coords="557,157,636,184"/>
 </map>

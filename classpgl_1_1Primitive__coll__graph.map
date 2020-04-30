@@ -1,5 +1,6 @@
 <map id="pgl::Primitive" name="pgl::Primitive">
-<area shape="rect" id="node2" href="$classpgl_1_1Object.html" title="Object in a scene. " alt="" coords="16,95,101,121"/>
-<area shape="rect" id="node3" href="$classpgl_1_1Transform.html" title="Homogeneous coordinate transform. " alt="" coords="5,5,112,32"/>
-<area shape="rect" id="node4" href="$classpgl_1_1Vector3.html" title="3&#45;component vector. " alt="" coords="126,95,218,121"/>
+<area shape="rect" id="node2" href="$classpgl_1_1Object.html" title="Object in a scene. " alt="" coords="61,95,146,121"/>
+<area shape="rect" id="node3" href="$classpgl_1_1Node.html" title="Node in the scene graph. " alt="" coords="5,5,84,32"/>
+<area shape="rect" id="node4" href="$classpgl_1_1Transform.html" title="Homogeneous coordinate transform. " alt="" coords="109,5,215,32"/>
+<area shape="rect" id="node5" href="$classpgl_1_1Vector3.html" title="3&#45;component vector. " alt="" coords="171,95,263,121"/>
 </map>
