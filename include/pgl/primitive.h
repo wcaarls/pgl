@@ -580,7 +580,7 @@ class Model : public Primitive
   protected:
     void make(const std::string &file, double scale)
     {
-      std::ifstream ifs(file);
+      std::ifstream ifs(file, std::ios::binary);
       
       // Read header
       uint8_t header[80];
@@ -608,7 +608,7 @@ class Model : public Primitive
         
         if (!ifs.good())
         {
-          std::cerr << file << " is truncated" << std::endl;
+          std::cerr << file << " is truncated at triangle " << ii << " of " << numint << std::endl;
           break;
         }
           

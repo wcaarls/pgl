@@ -45,13 +45,21 @@ To compile the example, additionally install
 ```
 sudo apt install libglfw3-dev
 ```
-# Setup
+
+To install the headers (and compile the example), run
+
 ```
 mkdir build
 cd build
 cmake ..
 make && sudo make install
 ```
+
+# Installation (Windows 10)
+
+Copy the header files to your desired include path.
+
+To compile the example, install [cmake](https://cmake.org/download/) and download [glfw3](https://www.glfw.org/) into an appropriate directory. Then configure cmake-gui in the main `pgl` directory; it will complain about not finding GLFW. Afterwards, set `GLFW_INCLUDE_DIR` to the directory containing the `GLFW` folder and `GLFW_LIBRARY` to the full path of `glfw3.lib`. Generate, open the solution in Visual Studio, and compile the `example` project.
 
 # Documentation
 

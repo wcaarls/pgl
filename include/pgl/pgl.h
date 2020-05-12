@@ -30,6 +30,10 @@
 #include <vector>
 #include <fstream>
 #include <iostream>
+#include <string>
+
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 // GLFW-compatible defines
 #define PGL_RELEASE 0
@@ -320,7 +324,7 @@ class Texture
     /// Loads texture from Portable Pixmap (PPM) file.
     Texture(const std::string &file, bool interpolate=true)
     {
-      std::ifstream ifs(file);
+      std::ifstream ifs(file, std::ios::binary);
       std::string magic;
       
       ifs >> magic;
@@ -392,7 +396,7 @@ class Texture
     
     void eatcomments(std::ifstream &ifs)
     {
-      char c;
+      unsigned char c;
       do
       {
         c = ifs.get();

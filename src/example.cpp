@@ -18,11 +18,12 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
+#include <GLFW/glfw3.h>
+
 #include <pgl/pgl.h>
 
-#include <GLFW/glfw3.h>
 #include <iostream>
-#include <unistd.h>
+#include <thread>
 
 bool stop__ = false;
 pgl::Camera *camera__;
@@ -135,7 +136,7 @@ int main(void)
   {
     glfwPollEvents();
     refresh(window);
-    usleep(10000);
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
   }
   
   // Clean up
