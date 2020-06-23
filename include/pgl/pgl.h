@@ -250,7 +250,7 @@ class Camera
       double aspect = dims[2]/(double)dims[3];
       
       double f = 1/tan(fovy/2);
-      double near = 1, far = 100;
+      double near = 0.1, far = 100;
       
       double matrix[] = {f/aspect, 0., 0., 0.,
                          0., f, 0., 0.,
