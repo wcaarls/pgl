@@ -70,6 +70,7 @@ class Vector3
     Vector3() { }
     Vector3(double _x, double _y, double _z) : data{_x, _y, _z} { }
     Vector3(const Vector3 &rhs) : data{rhs.x, rhs.y, rhs.z} { }
+    Vector3 &operator=(const Vector3 &rhs) = default;
     
     double &operator[](const unsigned int idx)
     {
