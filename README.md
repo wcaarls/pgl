@@ -1,5 +1,5 @@
 # pgl
-[![Build # Status](https://travis-ci.com/wcaarls/pgl.svg?branch=master)](https://travis-ci.com/wcaarls/pgl)
+[![Build # Status](https://github.com/wcaarls/pgl/workflows/CMake/badge.svg)](https://github.com/wcaarls/pgl/actions?query=workflow%3ACMake)
 
 Primitive OpenGL 3D primitive library
 
